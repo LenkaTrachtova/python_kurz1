@@ -121,8 +121,6 @@ try:
           for length in sorted(lengths):
                count = lengths[length]
                stars = "*" * count
-            #    gap = " " * (12 - len(stars))
-            #    num_gap = " " * (4 - len(str(length)))
                print(f"{colored_text(str(length).rjust(3), 214)}" +
                      f"{colored_text("|", 125)}" +
                      f"{colored_text(stars.ljust(35), 125)}{colored_text("|", 125)}" +
