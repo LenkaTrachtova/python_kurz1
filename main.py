@@ -42,7 +42,7 @@ print("""
 projekt_1.py: první projekt do Engeto Online Python Akademie
 
 author: Lenka Trachtová
-email: lenka@email.cz""")
+email: lenkatrachtova@email.cz""")
 print(link)
 
 #vstup uživatele
