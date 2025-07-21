@@ -134,7 +134,7 @@ try:
 except ValueError:
       print(f"Incorrect format{colored_text(",", 125)} " +
             f"program termination{colored_text("..", 125)}")          
-                    
+            quit()       
 print(link)
 
 
