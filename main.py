@@ -1,4 +1,13 @@
 import re
+from collections import Counter
+
+#hlavička
+print("""
+projekt_1.py: první projekt do Engeto Online Python Akademie
+
+author: Lenka Trachtová
+email: lenkatrachtova@email.cz""")
+
 TEXTS =  [
     '''Situated about 10 miles west of Kemmerer,
     Fossil Butte is a ruggedly impressive
@@ -35,58 +44,34 @@ user = {"bob": "123",
 def colored_text(text, color_code):
       return f"\033[38;5;{color_code}m{text}\033[0m"
 
-link = colored_text ("-", 125) * 45
-
-#hlavička
-print("""
-projekt_1.py: první projekt do Engeto Online Python Akademie
-
-author: Lenka Trachtová
-email: lenkatrachtova@email.cz""")
+link = colored_text ('-', 125) * 45
 print(link)
 
 #vstup uživatele
 name = input("username:")
 password = input("password:")
-#ANSI obarvení hesla
-import sys
-#přesunutí kurzoru o 2 řádky a obarvení výstupu
-sys.stdout.write("\033[F\033[K")
-print(f"username: {name}")
-sys.stdout.write("\033[F\033[K")
-print(f"password: {colored_text(password, 214)}")
 print(link)
 
 #podmínky přihlášení
 registred = user.get(name) == password
-    
 if registred:
-        print (f'''Welcome to the app{colored_text(",", 203)} {name}
-We have {colored_text("3", 214)} texts to be analyzed.''')
+        print (f'''Welcome to the app, {name}
+We have {colored_text('3', 214)} texts to be analyzed.''')
 else:
-    print(f"unregistered user{colored_text(",", 125)} " +
-          f"terminating the program{colored_text("..", 125)}")
+    print(f"unregistered user, terminating the program..")
     quit()
-
 print(link)
+
 #výběr textu
 try:
-    select = int(input(f"Enter a number btw{colored_text(".", 125)} " +
-                   f"{colored_text("1", 214)} {colored_text("and", 125)} " +
-                   f"{colored_text("3", 214)} to select:"))
-#obarvení výstupu
-    sys.stdout.write("\033[F\033[K")
-    print(f"Enter a number btw{colored_text(".", 125)} " +
-          f"{colored_text("1", 214)} {colored_text("and", 125)} " +
-          f"{colored_text("3", 214)} to select: {colored_text(select, 214)}")
+    select = int(input(f"Enter a number btw. {colored_text('1', 214)}and {colored_text('3', 214)} to select:"))
     print(link)
-
     if 1 <= select <= len(TEXTS):
           select_text = TEXTS[select -1]
 #analýza textu          
           words = re.findall(r'\b\w+\b', select_text)
           total_words = len(words)
-          capitalized_words = sum(1 for w in words if w[0].isupper() and w[1:].islower())
+          title_case = sum(1 for w in words if w[0].isupper() and w[1:].islower())
           uppercase_words = sum(1 for w in words if w.isupper())
           lowercase_words = sum(1 for w in words if w.islower())
           numbers = [int(w) for w in words if w.isdigit()]
@@ -94,64 +79,31 @@ try:
           number_sum = sum(numbers)
 #výstup
           print(
-             f"There are {colored_text(str(total_words), 214)} words " +
-             f"{colored_text("in", 125)} the selected text{colored_text(".", 125)}\n"
-             f"There are {colored_text(str(capitalized_words), 214)} " +
-             f"{colored_text("titlecase", 12)} words{colored_text(".", 125)}\n"
-             f"{colored_text("There", 11)} are {colored_text(str(uppercase_words), 214)} " +
-             f"uppercase words{colored_text(".", 125)}\n"
-             f"There are {colored_text(str(lowercase_words), 214)} {colored_text("lowercase", 12)} " +
-             f"words{colored_text(".", 125)}\n"
-             f"{colored_text("There", 11)} are {colored_text(number_count, 214)} " +
-             f"numeric strings{colored_text(".", 125)}\n"
+             f"There are {colored_text(str(total_words), 214)} words in the selected text.\n"
+             f"There are {colored_text(str(title_case), 214)} titlecase words.\n"
+             f"There are {colored_text(str(uppercase_words), 214)} uppercase words.\n"
+             f"There are {colored_text(str(lowercase_words), 214)} lowercase words.\n"
+             f"There are {colored_text(number_count, 214)} numeric strings.\n"
              f"The sum of all the numbers {colored_text(number_sum, 214)}"
                ) 
           print(link)
         
 #četnost délky slov
-          print(f"{'LEN'.rjust(3)}{colored_text('|', 125)}{'OCCURRENCES'.center(35)}{colored_text('|', 125)}" +
-                f"{'NR.'.rjust(3)}")
+          print(f"{'LEN'.rjust(3)}{colored_text('|', 125)}{'OCCURRENCES'.center(35)}{colored_text('|', 125)}{'NR.'.rjust(3)}")
           print(link)
-          
-          lengths = {}
-          for word in words:
-            length = len(word)
-            lengths[length] = lengths.get(length, 0) + 1
+          lengths = Counter(len(word) for word in words)
 #sloupcový graf   
           for length in sorted(lengths):
                count = lengths[length]
                stars = "*" * count
-               print(f"{colored_text(str(length).rjust(3), 214)}" +
-                     f"{colored_text("|", 125)}" +
-                     f"{colored_text(stars.ljust(35), 125)}{colored_text("|", 125)}" +
-                     f"{colored_text(str(count).rjust(3), 214)}"
+               print(f"{colored_text(str(length).rjust(3), 214)}{colored_text('|', 125)}{colored_text(stars.ljust(35), 125)}" +
+                     f"{colored_text('|', 125)}{colored_text(str(count).rjust(3), 214)}"
                      )
 #ukončení
     else:
-          print(f"Invalid number{colored_text(",", 125)} " +
-                f"program termination{colored_text("..", 125)}")
+          print("Invalid number, program termination..")
           quit()
 except ValueError:
-      print(f"Incorrect format{colored_text(",", 125)} " +
-            f"program termination{colored_text("..", 125)}")          
-            quit()       
+      print(f"Incorrect format, program termination..")
+      quit()          
 print(link)
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
